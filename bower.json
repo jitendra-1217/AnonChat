@@ -1,0 +1,20 @@
+{
+  "name": "fbanonchat",
+  "description": "Anon. chat with fb friends",
+  "main": "index.js",
+  "authors": [
+    "jitendra-1217 <jitendraojha1217@gmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.1.1"
+  }
+}

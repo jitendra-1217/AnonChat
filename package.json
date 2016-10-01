@@ -1,0 +1,21 @@
+{
+  "name": "fbanonchat",
+  "version": "1.0.0",
+  "description": "Anon. chat with fb friends",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.14.0",
+    "express-session": "^1.14.1",
+    "nodemon": "^1.10.2",
+    "passport": "^0.3.2",
+    "passport-facebook": "^2.1.1",
+    "socket.io": "^1.4.8"
+  }
+}
