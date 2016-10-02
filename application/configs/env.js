@@ -7,6 +7,7 @@ var Config = function() {
         FB_CLIENT_SECRET: process.env.FB_CLIENT_SECRET,
         FB_CALLBACK_URL:  process.env.FB_CALLBACK_URL,
 
+        SERVER_HOST:      process.env.SERVER_HOST,
         SERVER_PORT:      process.env.SERVER_PORT,
 
         COOKIE_SECRET:    process.env.COOKIE_SECRET,

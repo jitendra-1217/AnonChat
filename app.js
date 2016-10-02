@@ -46,6 +46,8 @@ app.set('view engine', 'jade');
 app.set('views', [
     __dirname + '/application/views'
 ]);
+app.locals.serverHost = config.SERVER_HOST;
+app.locals.serverPort = config.SERVER_PORT;
 
 io.use(function(socket, next) {
     sessionMidlwr(socket.request, socket.request.res, next);

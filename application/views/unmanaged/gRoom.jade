@@ -16,7 +16,8 @@ block container
     script(src="/shared/utils/kEvents.js")
 
     script.
-        var g = io.connect("http://localhost:4200/g");
+        //- var g = io.connect("#{serverHost}:#{serverPort}/g");
+        var g = io.connect("/g");
         var userMeta = {anonId: null, color: null};
 
         var prependMetaMessage = function(color, text) {
