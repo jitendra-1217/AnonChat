@@ -18,20 +18,48 @@
 // |_|   \__,_| /__/ /__/ | .__/ \___/ |_|    \__|  \__/  |___/
 //                        |_|
 
+var config           = require(__dirname + "/application/configs/env")();
+
 var express          = require("express");
 var app              = express();
 var server           = require("http").createServer(app);
 var io               = require("socket.io")(server);
+var cookieParser     = require('cookie-parser');
 var passport         = require("passport")
 var FacebookStrategy = require("passport-facebook").Strategy;
+var passportSocketIo = require("passport.socketio");
+var session          = require("express-session")
+var RedisStore       = require('connect-redis')(session);
+var sessionStore     = new RedisStore({host: config.REDIS_HOST, port: config.REDIS_PORT});
 
-app.use(require('cookie-parser')())
+app.use(cookieParser())
 app.use(require('body-parser')());
-app.use(require('express-session')({ secret: 'keyboard cat' }));
+app.use(session({
+    secret: config.COOKIE_SECRET,
+    store: sessionStore
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 
-config = require(__dirname + "/application/configs/env")();
+io.use(passportSocketIo.authorize({
+    cookieParser: cookieParser,
+    secret: config.COOKIE_SECRET,
+    store: sessionStore,
+    // TODO: Add proper handler methods
+    success: function(data, accept) {
+        console.log("Successful connection to socket.io");
+        accept();
+    },
+    fail: function(data, message, error, accept) {
+        if (error) accept(new Error(message));
+        console.log("Failed to connect to socket.io");
+        accept(null, false);
+    },
+}));
+
+// io.sockets.on('connection', function(socket) {
+//     console.log(socket.request.user);
+// });
 
 passport.use(new FacebookStrategy({
         clientID: config.FB_CLIENT_ID,
@@ -39,7 +67,7 @@ passport.use(new FacebookStrategy({
         callbackURL: config.FB_CALLBACK_URL
     },
     function(accessToken, refreshToken, profile, callback) {
-        // console.log(accessToken);
+        // TODO: Push accessToken to session
         callback(null, {id: profile.id, displayName: profile.displayName});
     }
 ));
