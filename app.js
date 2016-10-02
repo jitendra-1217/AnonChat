@@ -139,10 +139,10 @@ app.get(
     "/auth/facebook/callback",
     passport.authenticate(
         "facebook",
-        { successRedirect: "/public/?loginSuccess", failureRedirect: "/public/?loginFailed" }
+        { successRedirect: "/g", failureRedirect: "/public/?loginFailed" }
     )
 );
-app.get("/auth/logout", function(req, res) {
+app.get("/logout", function(req, res) {
     req.logout();
     req.session.destroy();
     res.redirect("/public/?logoutSuccess");

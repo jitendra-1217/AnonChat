@@ -38,19 +38,24 @@ div.chatWindowMeta {
     padding: 5px;
 }
 
-
-.black {
-    color: #000000;
+.aliceblue {
+    color: #F0F8FF;
 }
-.blue {
-    color: #0000FF;
+.antiquewhite {
+    color: #FAEBD7;
 }
-.red {
-    color: #FF0000;
+.aqua {
+    color: #00FFFF;
 }
-.green {
-    color: #008000;
+.aquamarine {
+    color: #7FFFD4;
 }
-.white {
-    color: #FFFFFF;
+.azure {
+    color: #F0FFFF;
+}
+.beige {
+    color: #F5F5DC;
+}
+.bisque {
+    color: #FFE4C4;
 }

@@ -8,13 +8,15 @@
     },
 
     exports.getRandomColor = function() {
-        // return "#" + ('00000'+(Math.random()*(1<<24)|0).toString(16)).slice(-6);
         colors = [
-            "black",
-            "blue",
-            "red",
-            "green",
-            "white"
+            // TODO: Add more colors & their respective css in /main.css file
+            "aliceblue",
+            "antiquewhite",
+            "aqua",
+            "aquamarine",
+            "azure",
+            "beige",
+            "bisque"
         ];
         return colors[Math.floor(Math.random() * colors.length)];
     },

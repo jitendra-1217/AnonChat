@@ -30,7 +30,7 @@ block container
             $("#chatWindow").prepend(
                 $("<div/>").addClass("chatMessageDiv")
                     .append($("<span/>").addClass("userAnonId " + color).text(anonId))
-                    .append($("<span/>").addClass("userMessage").text(text))
+                    .append($("<span/>").addClass("userMessage " + color).text(text))
             );
         };
 
@@ -50,7 +50,7 @@ block container
             if (message.anonId == userMeta.anonId) {
                 return;
             }
-            prependMetaMessage(message.color, "A new user joined as " + message.anonId);
+            prependMetaMessage(message.color, "Connected: " + message.anonId);
         });
 
         g.on(kEvents.G_USER_GONE, function(message) {
