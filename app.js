@@ -19,6 +19,7 @@
 //                        |_|
 
 var config           = require(__dirname + "/application/configs/env")();
+var authMidlwr       = require(__dirname + "/application/middlewares/auth");
 
 var express          = require("express");
 var app              = express();
@@ -40,6 +41,11 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.set('view engine', 'jade');
+app.set('views', [
+    __dirname + '/application/views'
+]);
 
 io.use(passportSocketIo.authorize({
     cookieParser: cookieParser,
@@ -89,6 +95,9 @@ app.use("/bower", express.static(__dirname + "/bower_components"));
 app.use("/public", express.static(__dirname + "/public"));
 
 // Auth
+app.get("/login", authMidlwr.isLoggedOut, function(req, res) {
+    res.render("unmanaged/login", {"title": "Login"});
+})
 app.get("/auth/facebook", passport.authenticate("facebook"));
 app.get(
     "/auth/facebook/callback",
@@ -99,7 +108,7 @@ app.get(
 );
 app.get("/auth/logout", function(req, res) {
     req.logout();
-    res.redirect("/public/?logout");
+    res.redirect("/public/?logoutSuccess");
 });
 
 // Starts server

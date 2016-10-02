@@ -19,5 +19,13 @@ module.exports = {
         } else {
             res.status(401).send("Auth required");
         }
+    },
+
+    "isLoggedOut": function(req, res, next) {
+        if (req.isAuthenticated()) {
+            res.redirect("/public?alreadyLoggedIn");
+        } else {
+            next();
+        }
     }
 };
