@@ -1,0 +1,75 @@
+extends ../layouts/master
+
+block container
+    h1 g chat room
+
+    input(type="text", id="message", size="75", autofocus, placeholder="Type message and hit enter..", maxlength="1000")
+
+    div#chatWindow
+        //- div.chatMessageDiv
+        //-     span.userAnonId  12345ABCDE
+        //-     span.userMessage xyz.......
+
+        //- div.chatWindowMeta
+
+
+    script(src="/shared/utils/kEvents.js")
+
+    script.
+        var g = io.connect("http://localhost:4200/g");
+        var userMeta = {anonId: null, color: null};
+
+        var prependMetaMessage = function(color, text) {
+            $("#chatWindow").prepend(
+                $("<div/>").addClass("chatWindowMeta " + color).text(text)
+            );
+        };
+
+        var prependUserMessage = function(color, anonId, text) {
+            //- TODO: Add little animation while prepending
+            $("#chatWindow").prepend(
+                $("<div/>").addClass("chatMessageDiv")
+                    .append($("<span/>").addClass("userAnonId " + color).text(anonId))
+                    .append($("<span/>").addClass("userMessage").text(text))
+            );
+        };
+
+        //- Handles general messages recieved from server
+        var gMessageHandler = function(message) {
+            if (message.type === "selfMeta") {
+
+                userMeta.anonId = message.anonId;
+                userMeta.color  = message.color;
+
+                prependMetaMessage(userMeta.color, "You joined as " + userMeta.anonId);
+            }
+        };
+        g.on("message", gMessageHandler);
+
+        g.on(kEvents.G_USER_ENTERED, function(message) {
+            if (message.anonId == userMeta.anonId) {
+                return;
+            }
+            prependMetaMessage(message.color, "A new user joined as " + message.anonId);
+        });
+
+        g.on(kEvents.G_USER_GONE, function(message) {
+            if (message.anonId == userMeta.anonId) {
+                return;
+            }
+            prependMetaMessage(message.color, "Disconnected: " + message.anonId);
+        });
+
+        g.on(kEvents.G_CLIENT_USER_MSG, function(message) {
+            prependUserMessage(message.color, message.anonId, message.text);
+        });
+
+
+        $("#message").keyup(function(e) {
+            if (e.keyCode == 13) {
+                var text = e.target.value;
+                e.target.value = "";
+                prependUserMessage(userMeta.color, userMeta.anonId, text);
+                g.emit(kEvents.G_USER_MSG, text);
+            }
+        });

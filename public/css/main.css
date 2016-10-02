@@ -12,3 +12,45 @@ a:link, a:visited {
 a:hover {
     color: #00FF00;
 }
+
+input[type="text"]#message {
+    color: white;
+    background-color: #404040;
+    padding: 5px;
+    font-size: 13px;
+}
+
+div#chatWindow {
+    margin-top: 25px;
+}
+
+div.chatMessageDiv {
+    padding: 5px;
+}
+
+span.userAnonId {
+    font-size: 12px;
+    margin-right: 10px;
+}
+span.userMessage {
+}
+div.chatWindowMeta {
+    padding: 5px;
+}
+
+
+.black {
+    color: #000000;
+}
+.blue {
+    color: #0000FF;
+}
+.red {
+    color: #FF0000;
+}
+.green {
+    color: #008000;
+}
+.white {
+    color: #FFFFFF;
+}
