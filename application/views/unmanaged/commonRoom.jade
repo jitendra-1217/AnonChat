@@ -1,7 +1,7 @@
 extends ../layouts/master
 
 block container
-    h1 Everyone is here :) Online: #[span(id="usersCountValue")]
+    h1 Everyone / Online: #[span(id="usersCountValue")]
 
     input(type="text", id="message", size="75", autofocus, placeholder="Type message and hit enter..", maxlength="1000")
 
@@ -30,7 +30,7 @@ block container
             //- TODO: Add little animation while prepending
             $("#chatWindow").prepend(
                 $("<div/>").addClass("chatMessageDiv")
-                    .append($("<span/>").addClass("userAnonId " + color).text(anonId))
+                    .append($("<span/>").addClass("userAnonId " + color).text(anonId + ": "))
                     .append($("<span/>").addClass("userMessage " + color).text(text))
             );
         };

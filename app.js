@@ -161,7 +161,7 @@ app.get("/logout", function(req, res) {
 
 // Global chat room
 app.get("/g", authMidlwr.isLoggedIn, function(req, res) {
-    res.render("unmanaged/commonRoom", {"title": "g chat room"});
+    res.render("unmanaged/commonRoom", {"title": "Common room"});
 });
 
 // Starts server
