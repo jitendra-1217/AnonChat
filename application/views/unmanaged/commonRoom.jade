@@ -1,7 +1,7 @@
 extends ../layouts/master
 
 block container
-    h1 g chat room
+    h1 Everyone is here :) Online: #[span(id="usersCountValue")]
 
     input(type="text", id="message", size="75", autofocus, placeholder="Type message and hit enter..", maxlength="1000")
 
@@ -17,7 +17,7 @@ block container
 
     script.
         //- var g = io.connect("#{serverHost}:#{serverPort}/g");
-        var g = io.connect("/g");
+        var g = io.connect();
         var userMeta = {anonId: null, color: null};
 
         var prependMetaMessage = function(color, text) {
@@ -43,6 +43,8 @@ block container
                 userMeta.color  = message.color;
 
                 prependMetaMessage(userMeta.color, "You joined as " + userMeta.anonId);
+            } else if (message.type === "usersCount") {
+                $('#usersCountValue').text(message.usersCount);
             }
         };
         g.on("message", gMessageHandler);

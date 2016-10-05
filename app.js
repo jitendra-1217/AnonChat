@@ -36,6 +36,9 @@ var RedisStore       = require('connect-redis')(session);
 var sessionStore     = new RedisStore({host: config.REDIS_HOST, port: config.REDIS_PORT});
 var sessionMidlwr    = session({ secret: config.COOKIE_SECRET, store: sessionStore, resave: true });
 
+var redis            = require("redis");
+var redis_client     = redis.createClient();
+
 app.use(cookieParser())
 app.use(require('body-parser')());
 app.use(sessionMidlwr);
@@ -107,18 +110,24 @@ var gHandler = function(socket) {
     socket.send(utilFunc.extend({type: "selfMeta"}, userMeta));
     socket.broadcast.emit(kEvents.G_USER_ENTERED, userMeta);
 
+    redis_client.incr("UsersCount", function(err, count) {
+        io.sockets.send({type: "usersCount", usersCount: count});
+    });
+
     socket.on(kEvents.G_USER_MSG, function(message) {
         socket.broadcast.emit(kEvents.G_CLIENT_USER_MSG, utilFunc.extend({text: message}, userMeta));
     });
 
     // Attaching disconnect handler
     socket.on("disconnect", function() {
+        redis_client.decr("UsersCount", function(err, count) {
+            io.sockets.send({type: "usersCount", usersCount: count});
+        });
         socket.broadcast.emit(kEvents.G_USER_GONE, userMeta);
     });
 };
 
-var g = io.of("/g")
-g.on("connection", gHandler);
+io.on("connection", gHandler);
 
 
 
@@ -152,7 +161,7 @@ app.get("/logout", function(req, res) {
 
 // Global chat room
 app.get("/g", authMidlwr.isLoggedIn, function(req, res) {
-    res.render("unmanaged/gRoom", {"title": "g chat room"});
+    res.render("unmanaged/commonRoom", {"title": "g chat room"});
 });
 
 // Starts server

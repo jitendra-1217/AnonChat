@@ -4,6 +4,8 @@
 body {
     background-color: #404040;
     color: #FFF;
+    margin: auto;
+    max-width: 650px;
 }
 
 a:link, a:visited {
